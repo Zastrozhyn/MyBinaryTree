@@ -89,26 +89,6 @@ public class MyTree<T> {
         return t.equals(node.t);
     }
 
-    private MyNode addNode(MyNode node, T t){
-        if ((compare((T) node.t, t) > 0)){
-            if(node.rightLeaf == null){
-                node.rightLeaf = new MyNode(t, node);
-                size++;
-                return node.rightLeaf;
-            }
-            node = addNode(node.rightLeaf, t);
-        }
-        if ((compare((T) node.t, t) < 0)){
-            if(node.leftLeaf == null){
-                node.leftLeaf = new MyNode<>(t, node);
-                size++;
-                return node.leftLeaf;
-            }
-            node = addNode(node.leftLeaf, t);
-        }
-        return node;
-    }
-
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("MyTree{");
@@ -116,24 +96,6 @@ public class MyTree<T> {
         sb.append(", size=").append(size);
         sb.append('}');
         return sb.toString();
-    }
-
-    private boolean isComparable(T t){
-        if(comparator != null){
-            return true;
-        }
-        return t instanceof Comparable;
-    }
-
-    private int compare(T t1, T t2){
-        if (comparator != null){
-            return comparator.compare(t2, t1);
-        }
-        else{
-            Comparable o1 =(Comparable) t1;
-            Comparable o2 =(Comparable) t2;
-            return o2.compareTo(o1);
-        }
     }
 
     public MyNode findNode(MyNode node, T t){
@@ -160,15 +122,15 @@ public class MyTree<T> {
         MyNode leftLeaf;
         MyNode rightLeaf;
 
-        public MyNode() {
+        MyNode() {
         }
 
-        public MyNode(T t, MyNode root) {
+        MyNode(T t, MyNode root) {
             this.t = t;
             this.root = root;
         }
 
-        public MyNode(T t) {
+        MyNode(T t) {
             root = new MyNode();
             this.t = t;
         }
@@ -182,6 +144,42 @@ public class MyTree<T> {
             sb.append(", right=").append(rightLeaf);
             sb.append('}');
             return sb.toString();
+        }
+    }
+    private MyNode addNode(MyNode node, T t){
+        if ((compare((T) node.t, t) > 0)){
+            if(node.rightLeaf == null){
+                node.rightLeaf = new MyNode(t, node);
+                size++;
+                return node.rightLeaf;
+            }
+            node = addNode(node.rightLeaf, t);
+        }
+        if ((compare((T) node.t, t) < 0)){
+            if(node.leftLeaf == null){
+                node.leftLeaf = new MyNode<>(t, node);
+                size++;
+                return node.leftLeaf;
+            }
+            node = addNode(node.leftLeaf, t);
+        }
+        return node;
+    }
+    private boolean isComparable(T t){
+        if(comparator != null){
+            return true;
+        }
+        return t instanceof Comparable;
+    }
+
+    private int compare(T t1, T t2){
+        if (comparator != null){
+            return comparator.compare(t2, t1);
+        }
+        else{
+            Comparable o1 =(Comparable) t1;
+            Comparable o2 =(Comparable) t2;
+            return o2.compareTo(o1);
         }
     }
 
