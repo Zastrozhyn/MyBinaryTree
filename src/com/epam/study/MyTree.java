@@ -16,6 +16,10 @@ public class MyTree<T> {
         this.comparator = comparator;
     }
 
+    public int size(){
+        return size;
+    }
+
     public void add (T t){
         if (!isComparable(t)){
             throw new IllegalArgumentException("Object doesn't implements Comparable ");
@@ -42,6 +46,7 @@ public class MyTree<T> {
             else {
                 node.root.rightLeaf = null;
             }
+            size--;
             return true;
         }
 
@@ -50,6 +55,8 @@ public class MyTree<T> {
             T minNodeInRightLeaf = (T) minNode((T) node.rightLeaf.t).t;
             remove(minNodeInRightLeaf);
             node.t = minNodeInRightLeaf;
+            size--;
+            return true;
         }
 
         //if node has only right child
@@ -62,6 +69,7 @@ public class MyTree<T> {
             }
             node.rightLeaf.root = node.root;
             node = node.rightLeaf;
+            size--;
             return true;
         }
 
@@ -75,9 +83,9 @@ public class MyTree<T> {
             }
             node.leftLeaf.root = node.root;
             node = node.leftLeaf;
+            size--;
             return true;
         }
-
         return true;
     }
 
@@ -87,15 +95,6 @@ public class MyTree<T> {
             return false;
         }
         return t.equals(node.t);
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("MyTree{");
-        sb.append("firstNode=").append(firstNode);
-        sb.append(", size=").append(size);
-        sb.append('}');
-        return sb.toString();
     }
 
     public MyNode findNode(MyNode node, T t){
@@ -181,6 +180,14 @@ public class MyTree<T> {
             Comparable o2 =(Comparable) t2;
             return o2.compareTo(o1);
         }
+    }
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("MyTree{");
+        sb.append("firstNode=").append(firstNode);
+        sb.append(", size=").append(size);
+        sb.append('}');
+        return sb.toString();
     }
 
 }
