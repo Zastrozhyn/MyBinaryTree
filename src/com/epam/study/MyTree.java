@@ -156,6 +156,7 @@ public class MyTree<T> implements BinaryTree<T> {
             return sb.toString();
         }
     }
+
     private MyNode addNode(MyNode node, T t){
         if ((compare((T) node.t, t) > 0)){
             if(node.rightLeaf == null){
@@ -175,6 +176,7 @@ public class MyTree<T> implements BinaryTree<T> {
         }
         return node;
     }
+
     private boolean isComparable(T t){
         if(comparator != null){
             return true;
@@ -192,6 +194,7 @@ public class MyTree<T> implements BinaryTree<T> {
             return o2.compareTo(o1);
         }
     }
+    
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("MyTree{");
