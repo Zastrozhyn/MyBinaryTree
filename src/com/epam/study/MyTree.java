@@ -2,7 +2,7 @@ package com.epam.study;
 
 import java.util.Comparator;
 
-public class MyTree<T> {
+public class MyTree<T> implements BinaryTree<T> {
     private MyNode firstNode;
     private int size;
     private Comparator<T> comparator;
@@ -11,6 +11,7 @@ public class MyTree<T> {
         size = 0;
     }
 
+    // You can use comparator
     public MyTree (Comparator<T> comparator){
         if(comparator != null)
         this.comparator = comparator;
@@ -20,7 +21,9 @@ public class MyTree<T> {
         return size;
     }
 
-    public void add (T t){
+    //Add object
+    @Override
+    public void add(T t){
         if (!isComparable(t)){
             throw new IllegalArgumentException("Object doesn't implements Comparable ");
         }
@@ -32,6 +35,8 @@ public class MyTree<T> {
         addNode(firstNode, t);
     }
 
+    //Delete object from Tree
+    @Override
     public boolean remove(T t){
         MyNode node = findNode(firstNode, t);
         if(node == null){
@@ -68,7 +73,6 @@ public class MyTree<T> {
                 node.root.rightLeaf = node.rightLeaf;
             }
             node.rightLeaf.root = node.root;
-            node = node.rightLeaf;
             size--;
             return true;
         }
@@ -82,13 +86,14 @@ public class MyTree<T> {
                 node.root.rightLeaf = node.leftLeaf;
             }
             node.leftLeaf.root = node.root;
-            node = node.leftLeaf;
             size--;
             return true;
         }
         return true;
     }
 
+    //return if obj contains in Tree
+    @Override
     public boolean contains(T t){
         MyNode node = findNode(firstNode, t);
         if(node == null){
@@ -97,7 +102,13 @@ public class MyTree<T> {
         return t.equals(node.t);
     }
 
-    public MyNode findNode(MyNode node, T t){
+    //return size of Tree
+    @Override
+    public int getSize(){
+        return size;
+    }
+
+    private MyNode findNode(MyNode node, T t){
         if (node != null && (compare((T) node.t, t) > 0)){
             node =findNode(node.rightLeaf, t);
         }
@@ -107,7 +118,7 @@ public class MyTree<T> {
         return node;
     }
 
-    public MyNode minNode (T t){
+    private MyNode minNode (T t){
         MyNode node =findNode(firstNode, t);
         while(node.leftLeaf != null){
             node = node.leftLeaf;
@@ -190,4 +201,23 @@ public class MyTree<T> {
         return sb.toString();
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MyTree)) return false;
+
+        MyTree<?> myTree = (MyTree<?>) o;
+
+        if (size != myTree.size) return false;
+        if (firstNode != null ? !firstNode.equals(myTree.firstNode) : myTree.firstNode != null) return false;
+        return comparator != null ? comparator.equals(myTree.comparator) : myTree.comparator == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = firstNode != null ? firstNode.hashCode() : 0;
+        result = 31 * result + size;
+        result = 31 * result + (comparator != null ? comparator.hashCode() : 0);
+        return result;
+    }
 }
